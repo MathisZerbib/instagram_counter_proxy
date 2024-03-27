@@ -1,0 +1,8 @@
+
+old_tries
+
+nodes_modules
+package-lock.json
+.env
+.env.local
+.env.production
