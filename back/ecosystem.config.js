@@ -1,6 +1,8 @@
 module.exports = {
-  apps : [{
-    name   : "app1",
-    script : "./app.js"
-  }]
-}
+  apps: [
+    {
+      name: "instagram server",
+      script: "./index.js",
+    },
+  ],
+};

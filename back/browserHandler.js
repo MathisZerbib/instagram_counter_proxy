@@ -43,7 +43,7 @@ class BrowserHandler {
 
     try {
       this.browser = await puppeteer.launch({
-        headless: true,
+        headless: false,
         executablePath: executablePath(),
         args: ["--ignore-certificate-errors"],
       });
