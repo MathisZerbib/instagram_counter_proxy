@@ -43,9 +43,9 @@ npm run dev
 ### License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
-This README provides a basic overview of how to set up, run, and use your Instagram follower counter application. Depending on the specifics of your project, you may need to adjust some steps or add additional information.
+This README provides a basic overview of how to set up, run the proof of concept (POC).
 
-Please note that this is for educational purposes only and I am not responsible for the use you make of the code.
+Kindly note that this content is intended solely for educational purposes, and I bear no responsibility for any use of the code.
 
 ```
 // Copyright (c) 2024 Mathis Zerbib
