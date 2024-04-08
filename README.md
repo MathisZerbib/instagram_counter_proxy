@@ -5,7 +5,7 @@ This application fetches the follower count of a specified Instagram user using 
 ## Prerequisites
 - Node.js (v14.0.0 or later)
 - npm (v6.0.0 or later)
-- Instagram account credentials (username and password)
+- Instagram account (username)
 
 ## Setup
 ### Clone the Repository
@@ -26,7 +26,6 @@ npm install
 Create a `.env` file in the `back` directory and add the following environment variables:
 ```
 INSTAGRAM_USERNAME=yourusername
-INSTAGRAM_PASSWORD=yourpassword
 ```
 replace the values with your Instagram account credentials.
 
@@ -45,6 +44,8 @@ npm run dev
 This project is licensed under the MIT License. See the LICENSE file for details.
 
 This README provides a basic overview of how to set up, run, and use your Instagram follower counter application. Depending on the specifics of your project, you may need to adjust some steps or add additional information.
+
+Please note that this is for educational purposes only and I am not responsible for the use you make of the code.
 
 ```
 // Copyright (c) 2024 Mathis Zerbib
