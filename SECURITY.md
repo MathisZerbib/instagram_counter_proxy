@@ -9,7 +9,7 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in this project, please report it immediately by sending an email to security@example.com. Please provide as much information as possible, including:
+If you discover a security vulnerability in this project, please report it immediately by sending an email to mathis.zerbib@gmail.com. Please provide as much information as possible, including:
 
 - A description of the vulnerability
 - Steps to reproduce the issue
