@@ -24,7 +24,7 @@ export default function Home() {
             error
           );
         });
-    }, 1000);
+    }, 2000);
   }, []);
 
   return (

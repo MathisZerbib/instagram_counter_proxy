@@ -15,6 +15,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "prettyjson": "^1.2.5",
     "proxy-lists": "^1.23.3",
     "puppeteer": "^22.6.1",
     "puppeteer-extra": "^3.3.6",

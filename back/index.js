@@ -1,20 +1,32 @@
+// main.js
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const ProxyHandler = require("./proxyHandler");
 const BrowserHandler = require("./browserHandler");
+const prettyjson = require("prettyjson");
+const { delay } = require("./utils");
+const getFollowers1 = require("./getFollowers1");
+const getFollowers2 = require("./getFollowers2");
+const getFollowers3 = require("./getFollowers3");
 
-const app = express();
-const port = 3000;
+let chalk;
 
-app.use(cors());
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+import("chalk").then((module) => {
+  chalk = module.default;
 });
 
-let followersCount = 0;
-
 (async () => {
+  const app = express();
+  const port = 3001;
+  let followersCount = 0;
+
+  app.use(cors());
+
+  app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+  });
+
   const proxyHandler = new ProxyHandler({
     countries: ["fr", "ch", "be"],
     anonymityLevel: ["elite", "anonymous"],
@@ -27,81 +39,65 @@ let followersCount = 0;
 
   const page = await browserHandler.getPage();
 
-  async function navigateToProfile(page, username) {
-    try {
-      await page.goto(
-        `https://livecounts.nl/instagram-realtime/?u=${username}`,
-        {
-          waitUntil: "networkidle0",
-          timeout: 10000,
-        }
-      );
-    } catch (error) {
-      console.error("Error navigating to profile:", error);
-      // Handle the error, e.g., retry navigation, exit the function, etc.
-      // throw error;
-      await navigateToProfile(page, username);
-    }
-  }
-
-  async function waitAndClickButton(page) {
-    try {
-      await page.waitForSelector(".fc-button-label", {
-        visible: true,
-        timeout: 2000,
-      });
-      await page.click(".fc-button-label");
-    } catch (error) {
-      // console.log("The .fc-button-label element was not found.");
-    }
-  }
-
-  async function extractFollowersCount(page) {
-    await page.waitForSelector(".main-odometer", {
-      visible: true,
-      delay: 1000,
-    });
-    const followersCount = await page.evaluate(() => {
-      const followersElement = document.querySelectorAll(
-        ".main-odometer .odometer-inside .odometer-digit"
-      );
-      const followersText = Array.from(
-        followersElement,
-        (a) => a.innerText
-      ).join("");
-      return parseInt(followersText);
-    });
-    return followersCount;
-  }
-
-  async function delay(time) {
-    return new Promise((resolve) => setTimeout(resolve, time));
-  }
-
-  await navigateToProfile(page, process.env.INSTAGRAM_USERNAME);
-
+  // Main execution loop
   while (true) {
-    let currentUrl = page.url();
-    await delay(1000);
-    await waitAndClickButton(page);
+    try {
+      followersCount = await getFollowers1(
+        page,
+        process.env.INSTAGRAM_USERNAME
+      );
+      if (followersCount) {
+        console.log(
+          chalk.green(
+            prettyjson.render({
+              followers: followersCount,
+              timestamp: new Date().toLocaleString(),
+              source: "getFollowers1",
+            })
+          )
+        );
+      }
 
-    followersCount = await extractFollowersCount(page);
+      if (!followersCount) {
+        followersCount = await getFollowers2(
+          page,
+          process.env.INSTAGRAM_USERNAME
+        );
+        if (followersCount) {
+          console.log(
+            chalk.blue(
+              prettyjson.render({
+                followers: followersCount,
+                timestamp: new Date().toLocaleString(),
+                source: "getFollowers2",
+              })
+            )
+          );
+        }
+      }
+      if (!followersCount) {
+        followersCount = await getFollowers3(process.env.INSTAGRAM_USERNAME);
+        if (followersCount) {
+          console.log(
+            chalk.red(
+              prettyjson.render({
+                followers: followersCount,
+                timestamp: new Date().toLocaleString(),
+                source: "getFollowers3",
+              })
+            )
+          );
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching followers:", error);
+    }
 
-    console.log(
-      JSON.stringify({
-        followers: followersCount,
-        timestamp: new Date().toLocaleString(),
-      })
-    );
+    await page.reload({ waitUntil: "networkidle0", timeout: 10000 });
+    console.log("----------------------------------------");
 
     app.get("/api/followers", async (req, res) => {
       res.json({ followers: followersCount });
     });
-
-    await page.reload({ waitUntil: "networkidle0", timeout: 10000 });
-
-    if (currentUrl.includes("google_vignette")) {
-      await navigateToProfile(page, process.env.INSTAGRAM_USERNAME);
-    }
   }
 })();
