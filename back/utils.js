@@ -2,25 +2,6 @@ async function delay(time) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-function handleError(error, message) {
-  console.error(message, error);
-  return null;
-}
-
-function logFollowersCount(followersCount, color, source) {
-  if (followersCount) {
-    console.log(
-      chalk[color](
-        prettyjson.render({
-          followers: followersCount,
-          timestamp: new Date().toLocaleString(),
-          source: source,
-        })
-      )
-    );
-  }
-}
-
 async function waitAndClickButton(page) {
   try {
     await page.waitForSelector(".fc-button-label", {
@@ -71,8 +52,6 @@ async function extractFollowersCount2(page) {
 
 module.exports = {
   delay,
-  handleError,
-  logFollowersCount,
   waitAndClickButton,
   extractFollowersCount,
   extractFollowersCount2,
