@@ -10,7 +10,7 @@ async function waitAndClickButton(page) {
     });
     await page.click(".fc-button-label");
   } catch (error) {
-    // console.log("The .fc-button-label element was not found.");
+   
   }
 }
 
