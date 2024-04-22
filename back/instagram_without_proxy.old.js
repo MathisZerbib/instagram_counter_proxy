@@ -3,8 +3,8 @@ require("dotenv").config(); // Load environment variables from .env file
 const puppeteer = require("puppeteer");
 
 (async () => {
-  var INSTAGRAM_USERNAME = process.env.INSTAGRAM_USERNAME;
-  var INSTAGRAM_PASSWORD = process.env.INSTAGRAM_PASSWORD;
+  const INSTAGRAM_USERNAME = process.env.INSTAGRAM_USERNAME;
+  const INSTAGRAM_PASSWORD = process.env.INSTAGRAM_PASSWORD;
 
   // Function to get the current hour
   function getCurrentHour() {
